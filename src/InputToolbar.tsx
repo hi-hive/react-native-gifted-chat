@@ -39,6 +39,7 @@ export interface InputToolbarProps {
   containerStyle?: StyleProp<ViewStyle>
   primaryStyle?: StyleProp<ViewStyle>
   accessoryStyle?: StyleProp<ViewStyle>
+  showTopBar?: boolean
   renderTopBar?(props: InputToolbarProps): React.ReactNode
   renderAccessory?(props: InputToolbarProps): React.ReactNode
   renderActions?(props: Actions['props']): React.ReactNode
@@ -60,6 +61,7 @@ export default class InputToolbar extends React.Component<
     containerStyle: {},
     primaryStyle: {},
     accessoryStyle: {},
+    showTopBar: false,
     onPressActionButton: () => {},
   }
 
@@ -73,6 +75,7 @@ export default class InputToolbar extends React.Component<
     containerStyle: StylePropType,
     primaryStyle: StylePropType,
     accessoryStyle: StylePropType,
+    showTopBar: PropTypes.bool,
   }
 
   state = {
@@ -156,11 +159,7 @@ export default class InputToolbar extends React.Component<
 
   renderTopBar() {
     if (this.props.renderTopBar) {
-      return (
-        <View>
-          {this.props.renderTopBar(this.props)}
-        </View>
-      )
+      return <View>{this.props.renderTopBar(this.props)}</View>
     }
     return null
   }
@@ -176,7 +175,7 @@ export default class InputToolbar extends React.Component<
           ] as ViewStyle
         }
       >
-        {this.renderTopBar()}
+        {this.props.showTopBar ? this.renderTopBar() : null}
         <View style={[styles.primary, this.props.primaryStyle]}>
           {this.renderActions()}
           {this.renderComposer()}
